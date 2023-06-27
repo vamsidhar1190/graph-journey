@@ -1,0 +1,20 @@
+.link-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.trigger-data {
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    // border: 1px solid gray;
+   border-radius: 5px;
+    background-color: white;
+     
+}
+
+.trigger-data h3 {
+    font-size: 16px;
+    // line-height: 25px;
+}

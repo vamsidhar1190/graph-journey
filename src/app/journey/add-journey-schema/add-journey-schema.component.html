@@ -1,0 +1,157 @@
+<div *ngIf="data.data.target.innerText=='Trigger'">
+    <form class="example-form" [formGroup]="form" class="triggerwrap">
+        <div class="trigger-data" style="margin-bottom: 30px;">
+            <h3>Trigger Data</h3>
+            <mat-icon (click)="onCancel()" style="cursor: pointer;padding-top: 20px;">highlight_off</mat-icon>
+        </div>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Contact Model</mat-label>
+            <mat-select placeholder="Select Data" formControlName="contactModel">
+                <mat-option value="Agent">Agent</mat-option>
+                <mat-option value="Recruit">Recruit</mat-option>
+            </mat-select>
+        </mat-form-field><br>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Status</mat-label>
+            <mat-select placeholder="Select Data" formControlName="status">
+                <mat-option value="draft">Draft</mat-option>
+                <mat-option value="active">Active</mat-option>
+                <mat-option value="stopped">Stopped</mat-option>
+                <mat-option value="archived">Archived</mat-option>
+            </mat-select>
+        </mat-form-field><br>
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Trigger</mat-label>
+            <mat-select placeholder="Select Data" formControlName="trigger">
+                <mat-option value="tag_added">Tag Added</mat-option>
+                <mat-option value="stage_changed">Stage Changed</mat-option>
+                <mat-option value="property_status">Property Status</mat-option>
+            </mat-select>
+        </mat-form-field><br>
+        <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Trigged Value</mat-label>
+            <input matInput placeholder="Trigger value" formControlName="triggerValue">
+        </mat-form-field>
+        <div class="data-buttons">
+            <button mat-stroked-button color="primary" (click)="onSubmit()">Save</button>
+            <button mat-stroked-button color="warn" (click)="onCancel()">Close</button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="data.data.target.innerText!='Trigger'">
+    <div class="trigger-data" style="margin-bottom: 30px;">
+        <h3>Add {{data.data.target.innerText}} Details</h3>
+        <mat-icon (click)="onCancel()" style="cursor: pointer;padding-top: 20px;">highlight_off</mat-icon>
+    </div>
+    <div mat-dialog-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!-- <div class="form-group">
+          
+            <mat-form-field appearance="outline">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="type">
+                    <mat-option value="action">Action</mat-option>
+                    <mat-option value="condition">Condition</mat-option>
+                    <mat-option value="delay">Delay</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> -->
+            <div *ngIf="data.data.target.innerText === 'Action'">
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Subtype</mat-label>
+                        <mat-select formControlName="template">
+                            <mat-option value="send_sms">Send_sms</mat-option>
+                            <mat-option value="send_email">Send_email</mat-option>
+                            <mat-option value="create_reminder">Create_reminder</mat-option>
+                            <mat-option value="add_tag">Add_tag</mat-option>
+                            <mat-option value="remove_tag">Remove_tag</mat-option>
+                            <mat-option value="update_field">Update_field</mat-option>
+
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Field</mat-label>
+                        <input matInput type="text" formControlName="field">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Value</mat-label>
+
+                        <input matInput type="text" formControlName="value1">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="data.data.target.innerText === 'Condition'">
+
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Condition</mat-label>
+                        <mat-select formControlName="condition">
+                            <mat-option value="field_value">Field_value</mat-option>
+                            <mat-option value="event">Event</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Comparator</mat-label>
+                        <mat-select formControlName="comparator">
+                            <mat-option value="eq">Equals</mat-option>
+                            <mat-option value="gt">Greater-than</mat-option>
+                            <mat-option value="lt">Less-than</mat-option>
+                            <mat-option value="gte">Greater-than or equal to</mat-option>
+                            <mat-option value="lte">Less-than or equal to</mat-option>
+                            <mat-option value="ne">Not Equal </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Value</mat-label>
+
+                        <input matInput type="text" formControlName="value2">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="data.data.target.innerText === 'Delay'">
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Date</mat-label>
+                        <input matInput type="date" formControlName="date">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Duration</mat-label>
+                        <input matInput type="text" formControlName="duration">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="data-buttons">
+                <button mat-stroked-button color="primary" (click)="onSubmit()">Save</button>
+                <button mat-stroked-button color="warn" (click)="onCancel()">Close</button>
+            </div>
+        </form>
+    </div>
+    <!-- <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button color="primary" [disabled]="!form.valid" (click)="onSubmit()">Save</button>
+</div> -->
+
+</div>

@@ -1,0 +1,152 @@
+<div class="chart-container">
+    <!-- *ngIf="addBtn;" -->
+    <!-- <div class="example-button-container" style="text-align: center; margin-left: -280px;" (click)="onNodeSelect('Trigger')">
+
+        <button mat-fab color="primary" *ngIf="addBtn;" aria-label="Example icon button with a delete icon">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div> -->
+    <ngx-graph [view]="[1500, 700]" [links]="links" [panToNode$]="panToNode$" [center$]="center$"
+        [layoutSettings]="layoutSettings" [nodes]="nodes" layout="dagre" [enableZoom]="true" [animate]="false"
+        [autoCenter]="true" style="margin-top: -550px;">
+
+        <ng-template #defsTemplate>
+            <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4"
+                orient="auto">
+                <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+            </svg:marker>
+
+        </ng-template>
+        <!-- Define the templates for nodes and links -->
+        <ng-template #nodeTemplate let-node>
+            <svg:g class="node" (click)="event($event)" [attr.transform]="'translate(' + 100 + ', ' + 10 + ')'">
+
+                <!--   -->
+                <svg:line *ngIf="isDragging && draggedLine" [attr.x1]="draggedLine.x1" [attr.y1]="draggedLine.y1"
+                    [attr.x2]="draggedLine.x2" [attr.y2]="draggedLine.y2"
+                    [attr.stroke]="isDragging && draggedLine ? 'red' : 'black'" [attr.stroke-width]="2"></svg:line>
+                <!-- Add line arrow -->
+                <svg:line *ngIf="node.label !== 'Condition'" x1="0" y1="225" x2="0" y2="180"
+                    [attr.stroke]="isDragging && draggedLine === node ? 'red' : 'black'" [attr.stroke-width]="2"
+                    [attr.pointer-events]="isDragging ? 'none' : 'auto'">
+                </svg:line>
+                <!-- <svg:polygon *ngIf=" node.label !=='Condition'" points=" -5,75 0,85 5,75" fill="black">
+                </svg:polygon> -->
+                <svg:line *ngIf="node.label === 'Condition'" [attr.disabled]="node.disabledYes"
+                    [ngClass]="{ 'disabled-line': node.disabledYes}" x1="-75" y1="225" x2="-75" y2="180" stroke="black"
+                    stroke-width="2"></svg:line>
+
+                <!-- <svg:polygon *ngIf="node.label === 'Condition'" points="-5,75 0,85 5,75" fill="black"></svg:polygon> -->
+                <svg:line *ngIf="node.label === 'Condition'" x1="75" y1="225" x2="75" y2="180" stroke="black"
+                    stroke-width="2" [attr.disabled]="node.disabledNo" [ngClass]="{ 'disabled-line': node.disabledNo }">
+                </svg:line>
+                <!-- <svg:polygon *ngIf="node.label === 'Condition'" points="-5,75 0,85 5,75" fill="black"></svg:polygon> -->
+
+                <foreignObject x="-100" y="30" style="
+                border: 1px solid gray;
+                height: 150px;
+                border-radius: 10px;
+                display: flex;
+                " width="200" height="100">
+                    <!-- (click)="deleteNode(node)" -->
+                    <mat-icon *ngIf="node.label!=='Trigger' " (click)="deleteNode(node,$event)"
+                        style="padding-left: 170px;margin-top: 10px; font-size: 20px;color: rgb(240, 159, 8);">delete_outline</mat-icon>
+                    <div *ngIf="node.label==='Trigger' " (click)="addSchema(node,$event)"
+                        style="text-align: center; background-color: white; margin-top: 50px;">
+                        <p>{{node.label}}</p>
+                        <!-- <button (click)="addPath(node)" mat-fab color="primary"
+                            aria-label="Example icon button with a delete icon"> -->
+                        <div>
+                            {{actionData.trigger}}
+                          
+                        </div>
+                        <!-- </button> -->
+                    </div>
+                    <div *ngIf=" node.label ==='Action' || node.label === 'Condition' || node.label === 'Delay'"
+                        (click)="addSchema(node,$event)"
+                        style="text-align: center; background-color: white; margin-top: 20px;">
+                        <p>{{node.label}}</p>
+                        <!-- <button (click)="addPath(node)" mat-fab color="primary"
+                                                                    aria-label="Example icon button with a delete icon"> -->
+
+                        <!-- </button> -->
+                        <div *ngFor="let data of actionData.nodes">
+                            <p *ngIf="node.label === 'Action'">{{ data?.action?.targetType }}</p>
+                        </div>
+                        <div *ngFor="let data of actionData.nodes">
+                            <div *ngFor="let data1 of data.conditions">
+                                <p *ngIf="node.label === 'Condition'">{{ data1.condition }}</p>
+                            </div>
+
+                        </div>
+                        <div *ngFor="let data of actionData.nodes">
+                            <p *ngIf="node.label === 'Delay'">{{ data?.duration ? data?.duration +' ' + 'Ms' : '' }}
+                            </p>
+                        </div>
+                    </div>
+                </foreignObject>
+                <!-- <svg:circle [attr.r]="30" [attr.fill]="node.color"></svg:circle> -->
+                <svg:foreignObject x="-30" y="-5" width="80" height="80">
+                    <div class="end-icon-button">
+                        <!-- <button (click)="addPath(node)" mat-fab color="primary"
+                            aria-label="Example icon button with a delete icon">
+                            <mat-icon>add</mat-icon>
+                        </button> -->
+                        <img src="{{node.icon}}" alt="Add" style="cursor: pointer;width: 60px;height: 60px;">
+
+                    </div>
+                </svg:foreignObject>
+                <!-- Icon button at the end of the line -->
+                <svg:foreignObject *ngIf="node.label !== 'Condition'" x="-28" y="225" width="60" height="60">
+                    <div class="end-icon-button">
+                        <button (click)="addPath(node)" mat-fab color="primary"
+                            aria-label="Example icon button with a delete icon">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </svg:foreignObject>
+                <svg:foreignObject *ngIf="node.label === 'Condition' " x="-100" y="225" width="60" height="60">
+                    <div class="end-icon-button">
+                        <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                            <mat-icon (click)="createYesNode(node,'Yes')" *ngIf="!node.disabledYes">add</mat-icon>
+                        </button>
+                    </div>
+                </svg:foreignObject>
+                <svg:foreignObject *ngIf="node.label === 'Condition' " x="50" y="225" width="60" height="60">
+                    <div class="end-icon-button">
+                        <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                            <mat-icon (click)="createYesNode(node,'No')" *ngIf="!node.disabledNo">add</mat-icon>
+                        </button>
+                    </div>
+                </svg:foreignObject>
+                <!-- <svg:foreignObject x="-40" y="-40" width="80" height="80">
+                    <div class="delete-node-button">
+                        <button (click)="deleteNode(node)" mat-icon-button color="warn" aria-label="Delete Node">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </svg:foreignObject> -->
+            </svg:g>
+
+            <!-- <div class="center-node-icon">
+                <button mat-icon-button color="primary" aria-label="Center Node">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div> -->
+        </ng-template>
+
+        <ng-template #linkTemplate let-link>
+            <svg:g class="edge">
+                <svg:path class="line" stroke-width="2" [attr.stroke]="'#888888'" [attr.marker-end]="'url(#arrow)'">
+                </svg:path>
+                <svg:text class="edge-label" text-anchor="middle">
+                    <textPath class="text-path" [attr.href]="'#' + link.id" startOffset="50%">
+                        {{ link.label }}
+                    </textPath>
+                </svg:text>
+            </svg:g>
+
+        </ng-template>
+
+    </ngx-graph>
+</div>
