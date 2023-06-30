@@ -76,9 +76,9 @@
                         <p>{{node.label}}</p>                    
                     
                         <div *ngIf="node.label === 'Action'">
-                            <h3>{{ actionData?.field }}</h3>
-                           <h3> {{ actionData?.template }}</h3>
-                            <h3>{{ actionData?.value1 }}</h3>
+                            {{ actionData?.field }}
+                            {{ actionData?.template }}
+                            {{ actionData?.value1 }}
                           </div>
                           
                           <div *ngIf="node.label === 'Condition'">

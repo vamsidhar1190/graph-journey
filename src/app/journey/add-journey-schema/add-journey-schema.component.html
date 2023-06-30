@@ -69,26 +69,22 @@
                             <mat-option value="add_tag">Add_tag</mat-option>
                             <mat-option value="remove_tag">Remove_tag</mat-option>
                             <mat-option value="update_field">Update_field</mat-option>
-
-
                         </mat-select>
                     </mat-form-field>
+                    
                 </div>
                 <div class="form-group">
-
                     <mat-form-field appearance="outline" style="width: 100%;">
-                        <mat-label>Field</mat-label>
-                        <input matInput type="text" formControlName="field">
+                      <mat-label>Field</mat-label>
+                      <input matInput type="text" formControlName="field">
                     </mat-form-field>
-                </div>
-                <div class="form-group">
-
+                  </div>
+                  <div class="form-group">
                     <mat-form-field appearance="outline" style="width: 100%;">
-                        <mat-label>Value</mat-label>
-
-                        <input matInput type="text" formControlName="value1">
+                      <mat-label>Value</mat-label>
+                      <input matInput type="text" formControlName="value1">
                     </mat-form-field>
-                </div>
+                  </div>
             </div>
             <div *ngIf="data.data.target.innerText === 'Condition'">
 
@@ -144,7 +140,7 @@
                 </div>
             </div>
             <div class="data-buttons">
-                <button mat-stroked-button color="primary" (click)="onSubmit()">Save</button>
+                <button mat-stroked-button color="primary" [disabled]="!isformvalid()" (click)="onSubmit()">Save</button>
                 <button mat-stroked-button color="warn" (click)="onCancel()">Close</button>
             </div>
         </form>

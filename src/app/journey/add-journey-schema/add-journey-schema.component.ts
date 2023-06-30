@@ -6,6 +6,7 @@ import { Action, JourneySchema, Node } from 'src/app/interfaces/node';
 import { from } from 'rxjs';
 import { MergedNode } from '@swimlane/ngx-graph';
 import { JsonPipe } from '@angular/common';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-add-journey-schema',
@@ -36,16 +37,16 @@ export class AddJourneySchemaComponent implements OnInit {
       this.form = this.fb.group({
         contactModel: [''],
         status: ['', Validators.required],
-        trigger: [''],
-        triggerValue: [''],
+        trigger: ['',Validators.required],
+        triggerValue: ['',Validators.required],
       });
     } else if (this.data.data.target.innerText === 'Action') {
       // this.journey = this.journeyService.getJourneys();
       this.form = this.fb.group({
         // type: ['action', Validators.required],
         template: ['', Validators.required],
-        field: [''],
-        value1: [''],
+        field: ['',Validators.required],
+        value1: ['',Validators.required],
         // condition: [''],
         // duration: [''],
       });
@@ -53,17 +54,21 @@ export class AddJourneySchemaComponent implements OnInit {
       // this.journey = this.journeyService.getJourneys();
       this.form = this.fb.group({
         // type: ['action', Validators.required],
-        comparator: [''],
-        value2: [''],
-        condition: [''],
+        comparator: ['',Validators.required],
+        value2: ['',Validators.required],
+        condition: ['',Validators.required],
       });
     } else {
       this.form = this.fb.group({
-        date: [''],
-        duration: [''],
+        date: ['',Validators.required],
+        duration: ['',Validators.required],
       });
     }
   }
+  isformvalid(): boolean {
+    return this.form.valid;
+  }
+
 
   // emailFormControl = new FormControl('', [Validators.required, Validators.email]);
   // datavalues=new FormControl('')
