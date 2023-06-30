@@ -1,4 +1,4 @@
-<div class="chart-container">
+<div class="chart-container chart-wrapper">
     <!-- *ngIf="addBtn;" -->
     <!-- <div class="example-button-container" style="text-align: center; margin-left: -280px;" (click)="onNodeSelect('Trigger')">
 
@@ -45,10 +45,10 @@
                 <foreignObject x="-150" y="30" style="
                 /* border: 1px solid gray; */
                 box-shadow: 0 0 2px 2px #ccc;
-                height: 150px;
+                height: 100vh;              
                 border-radius: 10px;
                 display: flex;
-                " width="300" height="100" class="content">
+                " width="300" class="content" >
                     <!-- (click)="deleteNode(node)" -->
                     <mat-icon *ngIf="node.label!=='Trigger' " (click)="deleteNode(node,$event)"
                         style="padding-left: 270px;margin-top: 10px; font-size: 20px;color: rgb(240, 159, 8);">delete_outline</mat-icon>
@@ -67,104 +67,34 @@
                             font-weight: bold;">8,046</p>
                             <p style="padding-top: 5px;
                             font-size: 18px;">Entered</p>
-
                         </div>
                         <!-- </button> -->
                     </div>
                     <div *ngIf=" node.label ==='Action' || node.label === 'Condition' || node.label === 'Delay'"
                         (click)="addSchema(node,$event)"
                         style="text-align: center; background-color: white; margin-top: 20px;">
-                        <!-- <p>{{node.label}}</p> -->
+                        <p>{{node.label}}</p>                    
+                    
                         <div *ngIf="node.label === 'Action'">
-                            <div style="line-height: 0px; font-family: sans-serif;">
-                                <p>Do they Match this condition?</p>
-                                <h5 style="margin-bottom: 0px; font-size: 15px;">Are they active user?</h5>
-                                <div style="display: flex; justify-content: space-around;">
-                                    <div>
-                                        <h6 style="    font-size: 20px;
-                            line-height: 0px;
-                            margin-top: 30px;
-                            margin-bottom: 20px;
-                            padding: 3px;">2,735</h6>
-                                        <p>Yes</p>
-                                    </div>
-                                    <div>
-                                        <h6 style="    font-size: 20px;
-                            line-height: 0px;
-                            margin-top: 30px;
-                            margin-bottom: 20px;
-                            padding: 3px;">5,311</h6>
-                                        <p>No</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="node.label === 'Condition'" class="condition-data" style="font-family: sans-serif; line-height: 0px;">
-                            <h5 class="mails">Sent Mail <span class="span-tag">or</span> SMS</h5>
-                            <div class="mails-data">
-                              <div>
-                                <h6 style="font-size: 15px;margin-bottom: 20px; ">Sent Mails</h6>
-                                 <p style="font-weight: bold; font-size: 15px;">3,450</p>
-                              </div>
-                              <div>
-                                <h6 style="font-size: 15px;margin-bottom: 20px; ">Sent SMS</h6>
-                                 <p style="font-weight: bold; font-size: 15px;">3,450</p>
-                              </div>
-                              <div>
-                                <h6 style="font-size: 15px;margin-bottom: 20px; "> Rej Mails/SMS</h6>
-                                 <p style="font-weight: bold; font-size: 15px;">3,450</p>
-                              </div>
-                            </div>                    
-                        </div>
-                        <div *ngIf="node.label === 'Delay'" style="font-family: sans-serif; margin-top: px;">
-                            <p style="font-size: 15px; margin-bottom: -25px;">Time to delay of Duration in Mail <span class="span-tag">or</span> SMS </p>
-                            <div class="data-duration">
-                                <div>
-                                  <h6 style="font-size: 15px;margin-bottom: -10px; ">Hours</h6>
-                                   <p style="font-weight: bold; font-size: 15px;">24 hrs</p>
-                                </div>
-                                <div>
-                                  <h6 style="font-size: 15px;margin-bottom: -10px; ">Minutes</h6>
-                                   <p style="font-weight: bold; font-size: 15px;">60 Min</p>
-                                </div>
-                                <div>
-                                  <h6 style="font-size: 15px;margin-bottom: -10px; "> Seconds</h6>
-                                   <p style="font-weight: bold; font-size: 15px;">60 Sec</p>
-                                </div>
-                              </div>                    
+                            <h3>{{ actionData?.field }}</h3>
+                           <h3> {{ actionData?.template }}</h3>
+                            <h3>{{ actionData?.value1 }}</h3>
+                          </div>
                           
-                        
-            
-                          
-                        </div>
-                        <!-- <button (click)="addPath(node)" mat-fab color="primary"
-                                                                    aria-label="Example icon button with a delete icon"> -->
-
-                        <!-- </button> -->
-                        <!-- <div *ngFor="let data of actionData.nodes">
-                            <p *ngIf="node.label === 'Action'">{{ data?.action?.targetType }}</p>
-                            <h1>hello world</h1>
-
-                        </div>
-                        <div *ngFor="let data of actionData.nodes">
-                            <div *ngFor="let data1 of data.conditions">
-                                <p *ngIf="node.label === 'Condition'">{{ data1.condition }}</p>
-                            </div>
-
-                        </div>
-                        <div *ngFor="let data of actionData.nodes">
-                            <p *ngIf="node.label === 'Delay'">{{ data?.duration ? data?.duration +' ' + 'Ms' : '' }}
-                            </p>
-                        </div> -->
+                          <div *ngIf="node.label === 'Condition'">
+                            {{ conditionData?.comparator }}
+                            {{ conditionData?.value2 }}
+                            {{ conditionData?.condition }}
+                          </div>
+                          <div *ngIf="node.label === 'Delay'">
+                            {{ delayData?.date }}
+                            {{ delayData?.duration }}                           
+                          </div>  
                     </div>
-                </foreignObject>
+                </foreignObject>               
                 <!-- <svg:circle [attr.r]="30" [attr.fill]="node.color"></svg:circle> -->
                 <svg:foreignObject x="-30" y="-5" width="80" height="80">
                     <div class="end-icon-button">
-                        <!-- <button (click)="addPath(node)" mat-fab color="primary"
-                            aria-label="Example icon button with a delete icon">
-                            <mat-icon>add</mat-icon>
-                        </button> -->
                         <img src="{{node.icon}}" alt="Add" style="cursor: pointer;width: 60px;height: 60px;">
 
                     </div>
@@ -222,3 +152,4 @@
 
     </ngx-graph>
 </div>
+
